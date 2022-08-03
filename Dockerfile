@@ -1,7 +1,13 @@
-FROM python:3.9
-WORKDIR /www/vringe
-COPY requirements.txt ./
-RUN pip install --upgrade pip
+FROM python:3.9 AS builder
+COPY requirements.txt .
+
 RUN pip install -r requirements.txt
-ADD vringe.py ./
-CMD [ "python", "./vringe.py" ]
+
+FROM python:3.9-slim
+WORKDIR /www/vringe
+
+COPY --from=builder /root/.local /root/.local
+COPY ./src .
+ENV PATH=/root/,local:$PATH
+
+CMD [ "python", "-u", "./vringe.py" ]
