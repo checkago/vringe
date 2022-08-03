@@ -7,7 +7,7 @@ FROM python:3.9-slim
 WORKDIR /www/vringe
 
 COPY --from=builder /root/.local /root/.local
-COPY ./src .
+COPY ./vringe.py .
 ENV PATH=/root/.local:$PATH
 
 CMD [ "python", "-u", "./vringe.py" ]
